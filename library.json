@@ -1,0 +1,23 @@
+{
+  "name": "SoundEngine",
+  "version": "1.0.0",
+  "description": "SoundEngine",
+  "keywords": ["espressif", "i2s", "soundengine"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BYuM-051/SoundEngine.git"
+  },
+  "authors": [
+    {
+      "name": "BYuM"
+    }
+  ],
+  "license": "MIT",
+  "frameworks": ["arduino"],
+  "platforms": ["espressif32"],
+  "_comments": 
+  [
+    "TODO : add stm32 f4 support",
+    "TODO : change name and description in library.json"
+  ]
+}

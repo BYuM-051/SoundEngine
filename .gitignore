@@ -427,3 +427,7 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# temporary files for ignore stm32
+examples/stm32F4/
+src/stm32/
