@@ -90,12 +90,13 @@ void SoundEngine::soundEngineThread()
     {
         if(!soundQueue.empty())
         {
+            size_t samplesToMix = 0;
             for(auto i = soundQueue.begin() ; i != soundQueue.end() ; )
             {
                 SoundEngine_Buffer_t* buffer = *i;
 
                 size_t remaining = buffer->soundLength - buffer->currentPlay;
-                size_t samplesToMix = std::min(SAMPLES_PER_TICK, remaining);
+                samplesToMix = std::min(SAMPLES_PER_TICK, remaining);
 
                 for(size_t j = 0 ; j < samplesToMix ; ++j)
                 {
@@ -115,8 +116,6 @@ void SoundEngine::soundEngineThread()
             }
 
             size_t bytesWritten;
-
-            size_t samplesToMix = std::min(SAMPLES_PER_TICK, remaining);
             
             i2s_write
             (
