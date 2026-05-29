@@ -71,6 +71,8 @@ public :
 private :
     std::list<SoundEngine_Buffer_t*> soundQueue;
 
+    SoundEngine_I2SConfig_t* i2sConfig;
+
     SoundEngine(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfig_t i2sConfig);
     void setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfig_t i2sConfig);
 

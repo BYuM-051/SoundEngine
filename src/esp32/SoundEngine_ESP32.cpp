@@ -21,6 +21,7 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     esp_err_t returnValue;
 
     //making configuration struct for I2S driver
+    this->i2sConfig = new SoundEngine_I2SConfig_t(i2sConfig); // store i2sConfig for later use in soundEngineThread
     const i2s_config_t config =
     {
         .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
@@ -115,9 +116,11 @@ void SoundEngine::soundEngineThread()
 
             size_t bytesWritten;
 
+            size_t samplesToMix = std::min(SAMPLES_PER_TICK, remaining);
+            
             i2s_write
             (
-                i2sConfig.i2s_port,
+                this->i2sConfig->i2s_port,
                 mixBuffer,
                 samplesToMix * sizeof(int16_t),
                 &bytesWritten,
