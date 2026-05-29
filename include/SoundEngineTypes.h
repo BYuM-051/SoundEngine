@@ -14,7 +14,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "SoundEngine.h"
+#if defined(ESP32)
+#include "driver/i2s.h"
+#endif
 
 /*
 *   SoundEngine Raw Sound Structure
