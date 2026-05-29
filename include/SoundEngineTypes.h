@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "SoundEngine.h"
+
 /*
 *   SoundEngine Raw Sound Structure
 *   TODO : add descriptions
