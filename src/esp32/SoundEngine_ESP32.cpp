@@ -47,6 +47,9 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     );
     if(returnValue != ESP_OK)
     {
+        #ifdef SOUNDENGINE_DEBUG
+            Serial.println("Failed to install I2S driver");
+        #endif
         configASSERT(0); // Failed to install I2S driver
     }
 
@@ -61,6 +64,9 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     returnValue = i2s_set_pin(i2sConfig.i2s_port, &pin_config);
     if(returnValue != ESP_OK)
     {
+        #ifdef SOUNDENGINE_DEBUG
+            Serial.println("Failed to set I2S pins");
+        #endif
         configASSERT(0); // Failed to set I2S pins
     }
 
@@ -74,6 +80,9 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     );
     if(returnValue != ESP_OK)
     {
+        #ifdef SOUNDENGINE_DEBUG
+            Serial.println("Failed to set I2S clock");
+        #endif
         configASSERT(0); // Failed to set I2S clock
     }
 
