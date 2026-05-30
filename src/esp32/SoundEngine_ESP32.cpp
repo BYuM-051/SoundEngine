@@ -14,6 +14,7 @@
 
 namespace
 {
+    static const char* TAG = "SoundEngine_ESP32";
 }
 
 void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfig_t i2sConfig)

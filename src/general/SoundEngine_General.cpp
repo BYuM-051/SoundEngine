@@ -8,6 +8,11 @@
 
 #include "SoundEngine.h"
 
+namespace
+{
+    static const char* TAG = "SoundEngine_General";
+}
+
 SoundEngine* SoundEngine::SoundEngineFactory(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfig_t i2sConfig)
 {
     SoundEngine* engine = new SoundEngine(pinConfig, i2sConfig);
