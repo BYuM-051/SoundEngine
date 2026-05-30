@@ -13,6 +13,11 @@ SoundEngine* SoundEngine::SoundEngineFactory(SoundEngine_PinConfig_t pinConfig, 
     SoundEngine* engine = new SoundEngine(pinConfig, i2sConfig);
     if(engine == nullptr)
     {
+        #ifdef SOUNDENGINE_DEBUG
+            #if defined(ESP32)
+                Serial.println("Failed to create SoundEngine instance");
+            #endif
+        #endif
         configASSERT(0); // Failed to create SoundEngine instance
     }
     return engine;
@@ -34,6 +39,11 @@ SoundEngine::SoundEngine(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfi
 
     if(result != pdPASS)
     {
+        #ifdef SOUNDENGINE_DEBUG
+            #if defined(ESP32)
+                Serial.println("Failed to create SoundEngine task");
+            #endif
+        #endif
         configASSERT(0); // Failed to create task
     }
 }
