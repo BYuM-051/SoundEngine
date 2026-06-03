@@ -12,6 +12,13 @@
 #if defined(ESP32)
 #include "SoundEngine.h"
 
+#if defined(SOUNDENGINE_DEBUG)
+    #include <Arduino.h>
+    #define soundEngineLog(msg) Serial.println(msg)
+#else
+    #define soundEngineLog(msg)
+#endif
+
 namespace
 {
     static const char* TAG = "SoundEngine_ESP32";
@@ -19,6 +26,7 @@ namespace
 
 void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfig_t i2sConfig)
 {
+    soundEngineLog("Setting up I2S interface...");
     esp_err_t returnValue;
 
     //making configuration struct for I2S driver
@@ -48,9 +56,7 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     );
     if(returnValue != ESP_OK)
     {
-        #ifdef SOUNDENGINE_DEBUG
-            Serial.println("Failed to install I2S driver");
-        #endif
+        soundEngineLog("Failed to install I2S driver");
         configASSERT(0); // Failed to install I2S driver
     }
 
@@ -65,9 +71,7 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     returnValue = i2s_set_pin(i2sConfig.i2s_port, &pin_config);
     if(returnValue != ESP_OK)
     {
-        #ifdef SOUNDENGINE_DEBUG
-            Serial.println("Failed to set I2S pins");
-        #endif
+        soundEngineLog("Failed to set I2S pins");
         configASSERT(0); // Failed to set I2S pins
     }
 
@@ -81,12 +85,11 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     );
     if(returnValue != ESP_OK)
     {
-        #ifdef SOUNDENGINE_DEBUG
-            Serial.println("Failed to set I2S clock");
-        #endif
+        soundEngineLog("Failed to set I2S clock");
         configASSERT(0); // Failed to set I2S clock
     }
 
+    soundEngineLog("I2S interface initialized successfully");
     return;
 }
 
