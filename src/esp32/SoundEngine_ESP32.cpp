@@ -12,15 +12,25 @@
 #if defined(ESP32)
 #include "SoundEngine.h"
 
+#if defined(SOUNDENGINE_DEBUG)
+    #include <Arduino.h>
+    #define soundEngineLog(msg) Serial.println(msg)
+#else
+    #define soundEngineLog(msg)
+#endif
+
 namespace
 {
+    static const char* TAG = "SoundEngine_ESP32";
 }
 
 void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfig_t i2sConfig)
 {
+    soundEngineLog("Setting up I2S interface...");
     esp_err_t returnValue;
 
     //making configuration struct for I2S driver
+    this->i2sConfig = new SoundEngine_I2SConfig_t(i2sConfig); // store i2sConfig for later use in soundEngineThread
     const i2s_config_t config =
     {
         .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX),
@@ -46,6 +56,7 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     );
     if(returnValue != ESP_OK)
     {
+        soundEngineLog("Failed to install I2S driver");
         configASSERT(0); // Failed to install I2S driver
     }
 
@@ -60,6 +71,7 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     returnValue = i2s_set_pin(i2sConfig.i2s_port, &pin_config);
     if(returnValue != ESP_OK)
     {
+        soundEngineLog("Failed to set I2S pins");
         configASSERT(0); // Failed to set I2S pins
     }
 
@@ -73,9 +85,11 @@ void SoundEngine::setupI2S(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SCon
     );
     if(returnValue != ESP_OK)
     {
+        soundEngineLog("Failed to set I2S clock");
         configASSERT(0); // Failed to set I2S clock
     }
 
+    soundEngineLog("I2S interface initialized successfully");
     return;
 }
 
@@ -89,12 +103,13 @@ void SoundEngine::soundEngineThread()
     {
         if(!soundQueue.empty())
         {
+            size_t samplesToMix = 0;
             for(auto i = soundQueue.begin() ; i != soundQueue.end() ; )
             {
                 SoundEngine_Buffer_t* buffer = *i;
 
                 size_t remaining = buffer->soundLength - buffer->currentPlay;
-                size_t samplesToMix = std::min(SAMPLES_PER_TICK, remaining);
+                samplesToMix = std::min(SAMPLES_PER_TICK, remaining);
 
                 for(size_t j = 0 ; j < samplesToMix ; ++j)
                 {
@@ -114,10 +129,10 @@ void SoundEngine::soundEngineThread()
             }
 
             size_t bytesWritten;
-
+            
             i2s_write
             (
-                i2sConfig.i2s_port,
+                this->i2sConfig->i2s_port,
                 mixBuffer,
                 samplesToMix * sizeof(int16_t),
                 &bytesWritten,

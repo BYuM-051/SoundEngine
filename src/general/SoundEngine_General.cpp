@@ -8,13 +8,28 @@
 
 #include "SoundEngine.h"
 
+#if defined(SOUNDENGINE_DEBUG)
+    #include <Arduino.h>
+    #define soundEngineLog(msg) Serial.println(msg)
+#else
+    #define soundEngineLog(msg)
+#endif
+
+namespace
+{
+    static const char* TAG = "SoundEngine_General";
+}
+
 SoundEngine* SoundEngine::SoundEngineFactory(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfig_t i2sConfig)
 {
+    soundEngineLog("Creating SoundEngine instance...");
     SoundEngine* engine = new SoundEngine(pinConfig, i2sConfig);
     if(engine == nullptr)
     {
+        soundEngineLog("Failed to create SoundEngine instance");
         configASSERT(0); // Failed to create SoundEngine instance
     }
+    soundEngineLog("SoundEngine instance created successfully");
     return engine;
 }
 
@@ -34,8 +49,10 @@ SoundEngine::SoundEngine(SoundEngine_PinConfig_t pinConfig, SoundEngine_I2SConfi
 
     if(result != pdPASS)
     {
+        soundEngineLog("Failed to create SoundEngine task");
         configASSERT(0); // Failed to create task
     }
+    soundEngineLog("SoundEngine task created successfully");
 }
 
 /*
@@ -57,8 +74,10 @@ bool SoundEngine::enqueSound(const RawSoundStruct* sound)
     SoundEngine_Buffer_t* buffer = new SoundEngine_Buffer_t(sound->soundArray, sound->soundLength);
     if(buffer == nullptr)
     {
-        return false; // Failed to allocate memory for sound buffer
+        soundEngineLog("Failed to allocate memory for sound buffer");
+        return false;
     }
     this->soundQueue.push_back(buffer);
+    soundEngineLog("Sound enqueued successfully");
     return true;
 }
