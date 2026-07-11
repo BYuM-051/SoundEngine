@@ -8,7 +8,6 @@ Currently supported platforms include:
 
 - ✅ ESP32-S3
 - 🚧 STM32 F Series (In Progress)
-- 🚧 More platforms coming soon
 
 ## Features
 
@@ -42,8 +41,6 @@ Represents a single PCM audio resource.
 | `soundArray` | `const int16_t*` | Pointer to 16-bit PCM sample array |
 | `soundLength` | `size_t` | Number of PCM samples in `soundArray` |
 
----
-
 ### `SoundEngine_PinConfig_t`
 
 I2S pin configuration.
@@ -53,8 +50,6 @@ I2S pin configuration.
 | `lrcPin` | `int` | I2S LRCLK (Word Select) pin |
 | `bclkPin` | `int` | I2S Bit Clock pin |
 | `dOutPin` | `int` | I2S Data Output pin (Connect to codec DIN) |
-
----
 
 ## Data Types for ESP32
 
@@ -81,8 +76,6 @@ Advanced I2S configuration for ESP32.
 ---
 
 ## Initialize
-
----
 
 ### `SoundEngine::SoundEngineFactory()`
 
@@ -132,8 +125,6 @@ if (soundEngine == nullptr)
 
 ## Mix & Play
 
----
-
 Queue a sound for playback.
 
 ```cpp
@@ -159,10 +150,8 @@ bool soundEngine.enqueSound(const RawSoundStruct* sound);
 
 ## ESP32-S3
 
-- MAX98357A Example *(Coming Soon)*
+- MAX98357A Example
 - ES8311 Codec Example *(Coming Soon)*
-
----
 
 ## STM32 F4
 
@@ -170,6 +159,6 @@ Coming Soon.
 
 ---
 
-# License
+# Note
 
-This project is currently under development.
+This project is currently under development
