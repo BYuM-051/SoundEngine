@@ -22,7 +22,6 @@ Currently supported platforms include:
 | Source | Status |
 | ------- | :----: |
 | Raw PCM Data Array | ✅ |
-| WAV File | ✅ |
 | SD Card WAV Streaming | 🚧 |
 | WiFi Audio Streaming | 🚧 |
 
